@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القرآن الكريم مع التفسير المسموع</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- شريط التحميل -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>جاري تحميل المصحف...</p>
+    </div>
+
+    <!-- الهيكل الرئيسي -->
+    <div class="container" id="main-content" style="display: none;">
+        <!-- الرأس -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-quran logo-icon"></i>
+                    <div>
+                        <h1 id="current-surah-title">المصحف الشريف</h1>
+                        <p class="subtitle">تلاوات كاملة مع التفسير الميسر</p>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <a href="index.html" class="nav-link" style="background-color: rgba(255,255,255,0.2); color: white; text-decoration: none;">
+                        <i class="fas fa-th-large"></i> بطاقات السور
+                    </a>
+                    <div class="theme-switch">
+                        <button id="theme-toggle" title="تبديل الوضع الليلي">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- شريط البحث والتنقل -->
+            <nav class="main-nav">
+                <div class="surah-selector-container">
+                    <select id="surah-selector" class="surah-selector">
+                        <option value="">اختر سورة للاستماع</option>
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </select>
+                    <div class="select-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" data-section="player">
+                        <i class="fas fa-play-circle"></i> التلاوة
+                    </a>
+                    <a href="#" class="nav-link" data-section="mushaf">
+                        <i class="fas fa-book-open"></i> المصحف
+                    </a>
+                    <a href="#" class="nav-link" data-section="tafseer">
+                        <i class="fas fa-book-reader"></i> التفسير
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="content-area">
+            <!-- قسم التلاوة -->
+            <section id="player-section" class="content-section active">
+                <div class="player-container">
+                    <!-- معلومات السورة -->
+                    <div class="surah-info">
+                        <h2 id="current-surah-name">سورة الفاتحة</h2>
+                        <div class="surah-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span id="surah-type">مكية</span>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-list-ol"></i>
+                                عدد الآيات: <span id="verse-count">7</span>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                المدة: <span id="surah-duration">03:45</span>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-home"></i>
+                                <a href="index.html" style="color: inherit; text-decoration: none;">العودة للبطاقات</a>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- مشغل الصوت -->
+                    <div class="audio-player-card">
+                        <div class="player-header">
+                            <h3><i class="fas fa-music"></i> مشغل التلاوة</h3>
+                            <div class="reciter-selector">
+                                <select id="reciter-selector">
+                                    <option value="1">عبد الباسط عبد الصمد</option>
+                                    <option value="2">محمود خليل الحصري</option>
+                                    <option value="3">سعد الغامدي</option>
+                                    <option value="4">مشاري العفاسي</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="audio-player">
+                            <audio id="quran-audio" preload="metadata">
+                                <source src="audio/001.mp3" type="audio/mpeg">
+                                المتصفح لا يدعم مشغل الصوت
+                            </audio>
+                            
+                            <div class="player-controls">
+                                <button class="ctrl-btn" id="rewind-btn" title="تراجع 10 ثوان">
+                                    <i class="fas fa-backward"></i>
+                                </button>
+                                <button class="ctrl-btn play-btn" id="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="ctrl-btn" id="forward-btn" title="تقديم 10 ثوان">
+                                    <i class="fas fa-forward"></i>
+                                </button>
+                                
+                                <div class="time-display">
+                                    <span id="current-time">00:00</span> / 
+                                    <span id="total-time">00:00</span>
+                                </div>
+                                
+                                <div class="volume-control">
+                                    <button class="ctrl-btn" id="mute-btn" title="كتم الصوت">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
+                                </div>
+                                
+                                <button class="ctrl-btn" id="repeat-btn" title="تكرار الآية الحالية">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <input type="range" id="progress-slider" min="0" max="100" value="0" class="progress-slider">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="player-actions">
+                            <button class="action-btn" id="prev-surah-btn">
+                                <i class="fas fa-step-backward"></i> السورة السابقة
+                            </button>
+                            <button class="action-btn" id="next-surah-btn">
+                                السورة التالية <i class="fas fa-step-forward"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- الآية الحالية -->
+                    <div class="current-verse-card">
+                        <div class="verse-header">
+                            <h3><i class="fas fa-quote-right"></i> الآية الحالية</h3>
+                            <span class="verse-number">رقم الآية: <span id="current-verse-num">1</span></span>
+                        </div>
+                        <div class="verse-content">
+                            <p id="current-verse-text" class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                            <p class="translation" id="current-verse-translation">بسم الله الرحمن الرحيم</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قائمة الآيات -->
+                <div class="verses-list-container">
+                    <h3><i class="fas fa-list"></i> آيات السورة</h3>
+                    <div class="search-box">
+                        <input type="text" id="verse-search" placeholder="ابحث في آيات السورة...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="verses-list" id="verses-list">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- قسم المصحف -->
+            <section id="mushaf-section" class="content-section">
+                <div class="mushaf-container">
+                    <div class="mushaf-controls">
+                        <button class="mushaf-btn" id="prev-page-btn">
+                            <i class="fas fa-arrow-right"></i> الصفحة السابقة
+                        </button>
+                        
+                        <div class="page-info">
+                            <h3>صفحة المصحف</h3>
+                            <div class="page-num">الصفحة <span id="current-page">1</span> من <span id="total-pages">604</span></div>
+                        </div>
+                        
+                        <button class="mushaf-btn" id="next-page-btn">
+                            الصفحة التالية <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mushaf-viewer">
+                        <img id="mushaf-image" src="images/mushaf/page-001.jpg" alt="صفحة المصحف" class="mushaf-img">
+                        
+                        <!-- نقاط تفاعلية على الصورة للآيات -->
+                        <div class="verse-hotspots" id="verse-hotspots">
+                            <!-- سيتم إضافة نقاط تفاعلية للآيات هنا -->
+                        </div>
+                    </div>
+                    
+                    <div class="page-navigation">
+                        <input type="range" id="page-slider" min="1" max="604" value="1">
+                        <div class="jump-to-page">
+                            <input type="number" id="page-jump-input" min="1" max="604" value="1">
+                            <button id="jump-btn">انتقل</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- قسم التفسير -->
+            <section id="tafseer-section" class="content-section">
+                <div class="tafseer-container">
+                    <div class="tafseer-header">
+                        <h2><i class="fas fa-book-reader"></i> تفسير الآيات</h2>
+                        <div class="tafseer-selector">
+                            <select id="tafseer-source">
+                                <option value="1">التفسير الميسر</option>
+                                <option value="2">تفسير السعدي</option>
+                                <option value="3">تفسير ابن كثير</option>
+                                <option value="4">التفسير الوسيط</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tafseer-content" id="tafseer-content">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                    
+                    <div class="tafseer-notes">
+                        <h4><i class="fas fa-lightbulb"></i> ملاحظات تفسيرية</h4>
+                        <p id="tafseer-notes-text">هذا تفسير ميسر مقتبس من عدة مصادر تفسيرية موثوقة، مع تبسيط العبارات لتكون مناسبة للقارئ العام.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- الفوتر -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p><i class="fas fa-info-circle"></i> هذا الموقع غير ربحي، وجميع المحتويات مجانية للاستخدام الشخصي.</p>
+                    <p class="copyright">© 2026 المصحف الشريف مع التفسير | <a href="index.html" style="color: var(--primary-color);">العودة لبطاقات السور</a></p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link"><i class="fas fa-th-large"></i> بطاقات السور</a>
+                    <a href="#" class="footer-link"><i class="fas fa-question-circle"></i> المساعدة</a>
+                    <a href="#" class="footer-link"><i class="fas fa-envelope"></i> اتصل بنا</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- نافذة منبثقة للآية -->
+    <div id="verse-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-verse-title">الآية 1</h3>
+            <div class="modal-body">
+                <p id="modal-verse-text" class="arabic-text"></p>
+                <div class="modal-tafseer">
+                    <h4>التفسير:</h4>
+                    <p id="modal-tafseer-text"></p>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn" id="modal-play-btn">
+                        <i class="fas fa-play"></i> استمع لهذه الآية
+                    </button>
+                    <button class="modal-btn" id="modal-close-btn">
+                        <i class="fas fa-times"></i> إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
